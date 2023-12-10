@@ -70,10 +70,7 @@ inline LegGeometry assembleGeometry(const datafacade::BaseDataFacade &facade,
         cumulative_distance += current_distance;
 
         // all changes to this check have to be matched with assemble_steps
-        auto turn_instruction = path_point.turn_edge
-                                    ? facade.GetTurnInstructionForEdgeID(*path_point.turn_edge)
-                                    : osrm::guidance::TurnInstruction::NO_TURN();
-        if (turn_instruction.type != osrm::guidance::TurnType::NoTurn)
+        if (path_point.turn_edge)
         {
             geometry.segment_distances.push_back(cumulative_distance);
             geometry.segment_offsets.push_back(geometry.locations.size());
@@ -84,7 +81,7 @@ inline LegGeometry assembleGeometry(const datafacade::BaseDataFacade &facade,
         const auto node_id = path_point.turn_via_node;
 
         if (node_id != geometry.node_ids.back() ||
-            turn_instruction.type != osrm::guidance::TurnType::NoTurn)
+	    path_point.turn_edge)
         {
             geometry.annotations.emplace_back(LegGeometry::Annotation{
                 current_distance,

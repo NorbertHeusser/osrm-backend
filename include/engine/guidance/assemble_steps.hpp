@@ -119,7 +119,7 @@ inline std::vector<RouteStep> assembleSteps(const datafacade::BaseDataFacade &fa
             const auto turn_instruction =
                 path_point.turn_edge ? facade.GetTurnInstructionForEdgeID(*path_point.turn_edge)
                                      : osrm::guidance::TurnInstruction::NO_TURN();
-            if (turn_instruction.type != osrm::guidance::TurnType::NoTurn)
+	    if (path_point.turn_edge)
             {
                 BOOST_ASSERT(segment_weight >= 0);
                 const auto name = facade.GetNameForID(step_name_id);
@@ -224,7 +224,9 @@ inline std::vector<RouteStep> assembleSteps(const datafacade::BaseDataFacade &fa
                 maneuver = {intersection.location,
                             bearing_in_driving_direction,
                             bearings.second,
-                            turn_instruction,
+                            turn_instruction.type != osrm::guidance::TurnType::NoTurn
+			      ? turn_instruction
+			      : osrm::guidance::TurnType::Continue,
                             WaypointType::None,
                             0};
                 segment_index++;
