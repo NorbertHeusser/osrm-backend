@@ -116,11 +116,15 @@ inline std::vector<RouteStep> assembleSteps(const datafacade::BaseDataFacade &fa
             segment_weight += path_point.weight_until_turn;
 
             // all changes to this check have to be matched with assemble_geometry
-            const auto turn_instruction =
-                path_point.turn_edge ? facade.GetTurnInstructionForEdgeID(*path_point.turn_edge)
-                                     : osrm::guidance::TurnInstruction::NO_TURN();
 	    if (path_point.turn_edge)
             {
+	        auto turn_instruction = facade.GetTurnInstructionForEdgeID(*path_point.turn_edge);
+		// We need to replace turn type NoTurn with Continue for all straigt crossings
+		// otherwise we get a problem in the intersection extraction
+		if (turn_instruction.type == osrm::guidance::TurnType::NoTurn) {
+		    turn_instruction.type = osrm::guidance::TurnType::Continue;
+		}
+
                 BOOST_ASSERT(segment_weight >= 0);
                 const auto name = facade.GetNameForID(step_name_id);
                 const auto ref = facade.GetRefForID(step_name_id);
@@ -224,9 +228,7 @@ inline std::vector<RouteStep> assembleSteps(const datafacade::BaseDataFacade &fa
                 maneuver = {intersection.location,
                             bearing_in_driving_direction,
                             bearings.second,
-                            turn_instruction.type != osrm::guidance::TurnType::NoTurn
-			      ? turn_instruction
-			      : osrm::guidance::TurnType::Continue,
+                            turn_instruction,
                             WaypointType::None,
                             0};
                 segment_index++;
