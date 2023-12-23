@@ -12,6 +12,7 @@ on:
 
 env:
   SEMVER_REF: ${{ inputs.ref || github.ref_name }}
+
 jobs:
   build-amd64:
     if: github.repository == 'Project-OSRM/osrm-backend'
