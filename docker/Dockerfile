@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim as builder
+FROM ubuntu:22.04 as builder
 ARG DOCKER_TAG
 ARG BUILD_CONCURRENCY
 RUN mkdir -p /src  && mkdir -p /opt
@@ -42,7 +42,7 @@ RUN NPROC=${BUILD_CONCURRENCY:-$(nproc)} && \
 
 # Multistage build to reduce image size - https://docs.docker.com/engine/userguide/eng-image/multistage-build/#use-multi-stage-builds
 # Only the content below ends up in the image, this helps remove /src from the image (which is large)
-FROM debian:bullseye-slim as runstage
+FROM ubuntu:22.04 as runstage
 
 COPY --from=builder /usr/local /usr/local
 COPY --from=builder /opt /opt
