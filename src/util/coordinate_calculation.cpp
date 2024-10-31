@@ -318,8 +318,8 @@ double findClosestDistance(const std::vector<Coordinate> &lhs, const std::vector
 
     const auto compute_minimum_distance_in_rhs = [&current_min, &rhs](const Coordinate coordinate)
     {
-        current_min =
-            std::min(current_min, findClosestDistance(coordinate, rhs.begin(), rhs.end()));
+        auto distance = findClosestDistance(coordinate, rhs.begin(), rhs.end());
+        current_min = std::min(current_min, distance);
         return false;
     };
     // NOLINTNEXTLINE(bugprone-unused-return-value)

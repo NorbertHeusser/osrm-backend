@@ -9,7 +9,6 @@ extern "C"
 }
 
 #include <filesystem>
-
 #include <string>
 
 namespace osrm::util
