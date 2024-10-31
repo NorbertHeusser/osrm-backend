@@ -188,7 +188,7 @@ double getLength(iterator_type begin, const iterator_type end, BinaryOperation o
         return false;
     };
     // side-effect find adding up distances
-    std::adjacent_find(begin, end, functor);
+    (void)std::adjacent_find(begin, end, functor);
 
     return result;
 }
@@ -206,7 +206,7 @@ findClosestDistance(const Coordinate coordinate, const iterator_type begin, cons
         return false;
     };
 
-    std::adjacent_find(begin, end, compute_minimum_distance);
+    (void)std::adjacent_find(begin, end, compute_minimum_distance);
     return current_min;
 }
 

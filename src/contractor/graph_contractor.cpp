@@ -645,7 +645,11 @@ std::vector<bool> contractGraph(ContractorGraph &graph,
 
     const util::XORFastHash<> hash;
 
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
     unsigned current_level = 0;
+    #pragma GCC diagnostic pop
+    
     std::size_t next_renumbering = number_of_nodes * 0.35;
     while (remaining_nodes.size() > number_of_core_nodes)
     {

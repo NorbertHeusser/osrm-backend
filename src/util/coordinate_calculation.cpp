@@ -324,12 +324,12 @@ double findClosestDistance(const std::vector<Coordinate> &lhs, const std::vector
     double current_min = std::numeric_limits<double>::max();
 
     const auto compute_minimum_distance_in_rhs = [&current_min, &rhs](const Coordinate coordinate) {
-        current_min =
-            std::min(current_min, findClosestDistance(coordinate, rhs.begin(), rhs.end()));
+        auto distance = findClosestDistance(coordinate, rhs.begin(), rhs.end());
+        current_min = std::min(current_min, distance);
         return false;
     };
     // NOLINTNEXTLINE(bugprone-unused-return-value)
-    std::find_if(std::begin(lhs), std::end(lhs), compute_minimum_distance_in_rhs);
+    (void)std::find_if(std::begin(lhs), std::end(lhs), compute_minimum_distance_in_rhs);
     return current_min;
 }
 

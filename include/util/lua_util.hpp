@@ -8,7 +8,13 @@ extern "C"
 #include <lualib.h>
 }
 
-#include <boost/filesystem/convenience.hpp>
+#include <boost/version.hpp>
+
+#if BOOST_VERSION >= 108000
+    #include <boost/filesystem.hpp>
+#else
+    #include <boost/filesystem/convenience.hpp>
+#endif
 
 #include <iostream>
 #include <string>

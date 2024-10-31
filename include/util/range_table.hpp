@@ -81,7 +81,10 @@ template <unsigned BLOCK_SIZE, storage::Ownership Ownership> class RangeTable
         unsigned last_length = 0;
         unsigned lengths_prefix_sum = 0;
         unsigned block_idx = 0;
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wunused-but-set-variable"
         unsigned block_counter = 0;
+        #pragma GCC diagnostic pop
         BlockT block;
 #ifndef BOOST_ASSERT_IS_VOID
         unsigned block_sum = 0;
