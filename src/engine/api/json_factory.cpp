@@ -168,6 +168,14 @@ util::json::Object makeIntersection(const guidance::IntermediateIntersection &in
     return result;
 }
 
+util::json::Object makeTiming(const guidance::RouteStep::Timing &timing)
+{
+    util::json::Object result;
+    result.values["duration"] = timing.duration;
+    result.values["distance"] = std::round(timing.distance * 10) / 10;
+    return result;
+}
+
 util::json::Object makeRouteStep(guidance::RouteStep step, util::json::Value geometry)
 {
     util::json::Object route_step;
@@ -204,6 +212,12 @@ util::json::Object makeRouteStep(guidance::RouteStep step, util::json::Value geo
                    std::back_inserter(intersections.values),
                    makeIntersection);
     route_step.values["intersections"] = std::move(intersections);
+
+    util::json::Array timings;
+    timings.values.reserve(step.timings.size());
+    std::transform(
+        step.timings.begin(), step.timings.end(), std::back_inserter(timings.values), makeTiming);
+    route_step.values["timings"] = std::move(timings);
 
     return route_step;
 }

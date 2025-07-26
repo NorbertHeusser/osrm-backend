@@ -159,6 +159,7 @@ inline std::vector<RouteStep> assembleSteps(const datafacade::BaseDataFacade &fa
                                           leg_geometry.FrontIndex(segment_index),
                                           leg_geometry.BackIndex(segment_index) + 1,
                                           {intersection},
+                                          {{segment_duration / 10., distance}},
                                           is_left_hand_driving});
 
                 if (leg_data_index + 1 < leg_data.size())
@@ -260,6 +261,7 @@ inline std::vector<RouteStep> assembleSteps(const datafacade::BaseDataFacade &fa
                                   leg_geometry.FrontIndex(segment_index),
                                   leg_geometry.BackIndex(segment_index) + 1,
                                   {intersection},
+                                  {{duration / 10., distance}},
                                   facade.IsLeftHandDriving(target_node_id)});
     }
     // In this case the source + target are on the same edge segment
@@ -305,6 +307,7 @@ inline std::vector<RouteStep> assembleSteps(const datafacade::BaseDataFacade &fa
                                   leg_geometry.FrontIndex(segment_index),
                                   leg_geometry.BackIndex(segment_index) + 1,
                                   {intersection},
+                                  {{duration / 10., leg_geometry.segment_distances[segment_index]}},
                                   facade.IsLeftHandDriving(source_node_id)});
     }
 
@@ -348,6 +351,7 @@ inline std::vector<RouteStep> assembleSteps(const datafacade::BaseDataFacade &fa
                               leg_geometry.locations.size() - 1,
                               leg_geometry.locations.size(),
                               {intersection},
+                              {{ZERO_DURATION, ZERO_DISTANCE}},
                               facade.IsLeftHandDriving(target_node_id)});
 
     BOOST_ASSERT(steps.front().intersections.size() == 1);
