@@ -74,6 +74,12 @@ struct RouteStep
     std::size_t geometry_begin;
     std::size_t geometry_end;
     std::vector<IntermediateIntersection> intersections;
+    struct Timing
+    {
+        double duration; // duration in seconds
+        double distance; // distance in meters
+    };
+    std::vector<Timing> timings;
     bool is_left_hand_driving;
 
     // remove all information from the route step, marking it as invalid (used to indicate empty
@@ -144,6 +150,7 @@ inline RouteStep &RouteStep::AddInFront(const RouteStep &preceding_step)
     intersections.insert(intersections.begin(),
                          preceding_step.intersections.begin(),
                          preceding_step.intersections.end());
+    timings.insert(timings.begin(), preceding_step.timings.begin(), preceding_step.timings.end());
 
     return *this;
 }
@@ -161,6 +168,7 @@ inline RouteStep &RouteStep::ElongateBy(const RouteStep &following_step)
     intersections.insert(intersections.end(),
                          following_step.intersections.begin(),
                          following_step.intersections.end());
+    timings.insert(timings.end(), following_step.timings.begin(), following_step.timings.end());
 
     return *this;
 }
